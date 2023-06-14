@@ -38,6 +38,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { UserOutlined } from '@ant-design/icons-vue';
+import { ApiResponseInterface } from '~/interfaces/response';
 
 
 export default defineComponent({

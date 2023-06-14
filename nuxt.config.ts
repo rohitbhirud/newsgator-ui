@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	devtools: { enabled: true },
+	components: [{ path: '~/components/home', prefix: 'Home' }, '~/components'],
 	vite: {
 		css: {
 			preprocessorOptions: {
@@ -13,6 +14,7 @@ export default defineNuxtConfig({
 	css: ['~/assets/scss/main.scss'],
 	modules: [
 		'@nuxtjs/tailwindcss',
+		'@pinia/nuxt',
 		[
 			'@nuxtjs/google-fonts',
 			{

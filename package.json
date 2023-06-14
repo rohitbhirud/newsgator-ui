@@ -18,6 +18,8 @@
     "sass": "^1.63.3"
   },
   "dependencies": {
-    "ant-design-vue": "^3.2.20"
+    "@pinia/nuxt": "^0.4.11",
+    "ant-design-vue": "^3.2.20",
+    "pinia": "^2.1.3"
   }
 }
