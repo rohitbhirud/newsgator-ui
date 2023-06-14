@@ -4,13 +4,13 @@
     </div>
     <a-form :model="formState" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-form-item label="Categories">
-            <a-checkbox-group v-model:value="formState.categories">
+            <a-radio-group v-model:value="formState.category">
                 <div class="flex flex-wrap">
                     <div v-for="(category, index) in categories" :key="index" class="mr-4 mb-2">
-                        <a-checkbox :value="category" name="category">{{ category?.toUpperCase() }}</a-checkbox>
+                        <a-radio :value="category" name="category">{{ category?.toUpperCase() }}</a-radio>
                     </div>
                 </div>
-            </a-checkbox-group>
+            </a-radio-group>
         </a-form-item>
 
         <a-form-item label="Sources">
@@ -42,7 +42,7 @@ import type { UnwrapRef } from 'vue';
 import { storeToRefs } from 'pinia';
 
 interface FormState {
-    categories: string[];
+    category: string;
     sources: string[];
 }
 export default defineComponent({
@@ -57,8 +57,8 @@ export default defineComponent({
         await ngStore.fetchSources();
 
         const formState: UnwrapRef<FormState> = reactive({
-            categories: preferences.value.categories.split(','),
-            sources: preferences.value.sources.split(','),
+            category: preferences?.value?.category || '',
+            sources: preferences?.value?.sources.split(',') || [],
         });
 
         const logOutState = reactive({
@@ -66,9 +66,10 @@ export default defineComponent({
         });
 
         const onSubmit = async () => {
+            console.log("🚀 ~ onSubmit ~ formState:", formState);
 
             const data = {
-                categories: formState.categories.join(','),
+                categories: formState.category,
                 sources: formState.sources.join(',')
             }
 

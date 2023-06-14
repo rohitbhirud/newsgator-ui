@@ -37,6 +37,12 @@ export interface SourceInterface {
 }
 
 export interface UserPrefsInterface {
-	categories: string;
+	category: string;
 	sources: string;
+}
+
+export interface QueryInterface {
+	q?: string;
+	sources?: string;
+	category?: string;
 }

@@ -5,11 +5,15 @@ export const useNewsGatorStore = defineStore({
 	id: 'articles-store',
 	state: () => {
 		return {
+			filteredArticles: [] as ArticleInterface[],
 			articles: [] as ArticleInterface[],
 			categories: [] as string[],
 			sources: [] as SourceInterface[],
 			countries: [] as string[],
-			preferences: {} as UserPrefsInterface,
+			preferences: {
+				category: '',
+				sources: '',
+			} as UserPrefsInterface,
 			user: {} as UserInterface,
 			token: '' as string,
 		};
@@ -17,32 +21,64 @@ export const useNewsGatorStore = defineStore({
 	persist: true,
 	actions: {
 		async fetchArticles() {
-			const { data }: any = await useFetch('http://newsgator.test/api/articles?country=in&page_size=8');
+			let query = '';
 
-			if (data.value) {
+			if (this.preferences?.category) {
+				query += `category=${this.preferences?.category}`;
+			} else if (this.preferences?.sources) {
+				query += `sources=${this.preferences?.sources}`;
+			}
+
+			const { data, refresh }: any = await useFetch(`http://newsgator.test/api/articles?country=in&page_size=8&${query}`, {
+				cache: 'no-cache',
+			});
+
+			const loadPost = () => {
+				refresh();
+			};
+
+			loadPost();
+
+			if (data?.value?.data?.articles) {
 				this.articles = data?.value?.data?.articles;
 			}
 		},
+		async fetchFilteredArticles(query: string) {
+			const { data }: any = await useFetch(`http://newsgator.test/api/articles?country=in&page_size=8&${query}`, {
+				cache: 'no-cache',
+			});
+
+			if (data?.value?.data?.articles) {
+				this.filteredArticles = data?.value?.data?.articles;
+			}
+		},
 		async fetchCategories() {
-			const { data }: any = await useFetch('http://newsgator.test/api/articles/categories');
-			if (data.value) {
+			const { data }: any = await useFetch('http://newsgator.test/api/articles/categories', {
+				cache: 'no-cache',
+			});
+			if (data?.value?.data) {
 				this.categories = data?.value?.data;
 			}
 		},
 		async fetchSources() {
-			const { data }: any = await useFetch('http://newsgator.test/api/articles/sources');
+			const { data }: any = await useFetch('http://newsgator.test/api/articles/sources', {
+				cache: 'no-cache',
+			});
 			if (data.value) {
 				this.sources = data?.value?.data.sources;
 			}
 		},
 		async fetchCountries() {
-			const { data }: any = await useFetch('http://newsgator.test/api/articles/countries');
+			const { data }: any = await useFetch('http://newsgator.test/api/articles/countries', {
+				cache: 'no-cache',
+			});
 			if (data.value) {
 				this.countries = data?.value?.data;
 			}
 		},
 		async fetchUserPreferences() {
 			const { data }: any = await useFetch('http://newsgator.test/api/user/preferences', {
+				cache: 'no-cache',
 				headers: {
 					Authorization: 'Bearer ' + this.token,
 				},
@@ -58,6 +94,7 @@ export const useNewsGatorStore = defineStore({
 			body.append('password', payload.password);
 
 			const { data }: any = await useFetch('http://newsgator.test/api/auth/login', {
+				cache: 'no-cache',
 				method: 'POST',
 				body: body,
 				headers: {
@@ -71,6 +108,9 @@ export const useNewsGatorStore = defineStore({
 					email: data?.value?.data?.email,
 					name: data?.value?.data?.name,
 				};
+				return true;
+			} else {
+				return false;
 			}
 		},
 
@@ -86,6 +126,7 @@ export const useNewsGatorStore = defineStore({
 			body.append('sources', payload.sources);
 
 			const { data }: any = await useFetch('http://newsgator.test/api/user/preferences', {
+				cache: 'no-cache',
 				method: 'POST',
 				body: body,
 				headers: {
@@ -95,17 +136,19 @@ export const useNewsGatorStore = defineStore({
 			});
 
 			this.preferences = {
-				categories: payload.categories,
+				category: payload.categories,
 				sources: payload.sources,
 			};
 		},
 
-		async register(payload: { email: string; password: string }) {
+		async register(payload: { email: string; password: string; name: string }) {
 			const body = new URLSearchParams();
+			body.append('name', payload.name);
 			body.append('email', payload.email);
 			body.append('password', payload.password);
 
-			const { data }: any = await useFetch('http://newsgator.test/api/auth/register', {
+			const { data, error }: any = await useFetch('http://newsgator.test/api/auth/register', {
+				cache: 'no-cache',
 				method: 'POST',
 				body: body,
 				headers: {
@@ -113,13 +156,13 @@ export const useNewsGatorStore = defineStore({
 				},
 			});
 
-			if (data.value) {
-				this.token = data?.value?.data?.token;
-				this.user = {
-					email: data?.value?.data?.email,
-					name: data?.value?.data?.name,
-				};
+			if (error) {
+				return false;
+			} else {
+				return true;
 			}
+
+			return data;
 		},
 	},
 });

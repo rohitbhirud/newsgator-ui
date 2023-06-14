@@ -27,11 +27,11 @@
         </div>
 
         <div class="flex justify-center mt-1">
-            <a-menu v-model:selectedKeys="selectedKeys" theme="dark" class="flex">
+            <div theme="dark" class="flex">
                 <div v-for="(category, index) in categories" :key="index">
-                    <a-menu-item>{{ category.toUpperCase() }}</a-menu-item>
+                    <a @click="goToCategory(category)" class="text-white block mr-8">{{ category.toUpperCase() }}</a>
                 </div>
-            </a-menu>
+            </div>
         </div>
     </a-layout-header>
 </template>
@@ -45,6 +45,9 @@ import { storeToRefs } from 'pinia';
 
 export default defineComponent({
     async setup() {
+        const route = useRoute()
+
+        console.log("🚀 ~ onSearch ~ $nuxt.$route.name:", route.path);
 
         const ngStore = useNewsGatorStore();
 
@@ -54,10 +57,34 @@ export default defineComponent({
 
         const value = ref<string>('');
 
-        const onSearch = (searchValue: string) => {
+        const onSearch = async (searchValue: string) => {
             console.log('use value', searchValue);
-            console.log('or use this.value', value.value);
+
+            await ngStore.fetchFilteredArticles(`q=${searchValue}`);
+
+            if (route.path !== '/results') {
+                await navigateTo({
+                    path: '/results',
+                    query: {
+                        q: searchValue
+                    }
+                })
+            }
         };
+
+        const goToCategory = async (category: string) => {
+            console.log("🚀 ~ goToCategory ~ category:", category);
+            if (route.path !== '/results') {
+                await navigateTo({
+                    path: '/results',
+                    query: {
+                        category
+                    }
+                })
+            } else {
+                await ngStore.fetchFilteredArticles(`category=${category}`);
+            }
+        }
 
         return {
             selectedKeys: ref<string[]>(['2']),
@@ -66,6 +93,7 @@ export default defineComponent({
             categories,
             UserOutlined,
             user,
+            goToCategory,
         };
     },
 });

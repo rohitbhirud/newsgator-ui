@@ -4,10 +4,12 @@
             <a-alert :message="message" type="info" />
         </div>
 
-
         <a-form :model="formState" v-bind="layout" name="nest-messages" :validate-messages="validateMessages"
             @finish="onFinish" class="w-2/5">
-            <h1 class="text-center text-3xl mb-10">Login</h1>
+            <h1 class="text-center text-3xl mb-10">Register</h1>
+            <a-form-item :name="['user', 'name']" label="Name" :rules="[{ required: true, }]">
+                <a-input v-model:value="formState.user.name" />
+            </a-form-item>
             <a-form-item :name="['user', 'email']" label="Email" :rules="[{ required: true, type: 'email' }]">
                 <a-input v-model:value="formState.user.email" />
             </a-form-item>
@@ -15,9 +17,9 @@
                 <a-input-password v-model:value="formState.user.password" />
             </a-form-item>
             <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }">
-                <a-button type="primary" html-type="submit" class="mr-8">{{ 'Login' }}</a-button>
-                <NuxtLink to="/register">
-                    <a-button type="info" html-type="submit">{{ 'Register' }}</a-button>
+                <a-button type="primary" html-type="submit" class="mr-8">{{ 'Register' }}</a-button>
+                <NuxtLink to="/login">
+                    <a-button type="info" html-type="submit">{{ 'Login' }}</a-button>
                 </NuxtLink>
             </a-form-item>
         </a-form>
@@ -35,9 +37,9 @@ export default defineComponent({
 
         const { token } = storeToRefs(ngStore)
 
-        const message = useLoginMessage()
+        const message = useRegisterMessage()
 
-        if (token.value) {
+        if (token) {
             await navigateTo('/')
         }
 
@@ -56,6 +58,7 @@ export default defineComponent({
 
         const formState = reactive({
             user: {
+                name: '',
                 email: '',
                 password: '',
             },
@@ -64,16 +67,16 @@ export default defineComponent({
         const onFinish = async (values: any) => {
             console.log('Success:', values);
 
-            const res = await ngStore.login(values.user)
+            const res = await ngStore.register(values.user)
 
             if (res) {
-                message.value = 'Login Successful!'
+                message.value = 'Register Successful!'
             } else {
-                message.value = 'Wrong email or password!'
+                message.value = 'Please enter valid info.'
             }
 
             if (token.value) {
-                await navigateTo('/')
+                await navigateTo('/login')
             }
 
             return {
