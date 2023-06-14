@@ -9,10 +9,13 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@ant-design/icons-vue": "^6.1.0",
     "@nuxt/devtools": "latest",
+    "@nuxtjs/google-fonts": "^3.0.1",
     "@nuxtjs/tailwindcss": "^6.7.2",
     "@types/node": "^18",
-    "nuxt": "^3.5.2"
+    "nuxt": "^3.5.2",
+    "sass": "^1.63.3"
   },
   "dependencies": {
     "ant-design-vue": "^3.2.20"

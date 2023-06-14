@@ -10,6 +10,19 @@ export default defineNuxtConfig({
 			},
 		},
 	},
+	css: ['~/assets/scss/main.scss'],
+	modules: [
+		'@nuxtjs/tailwindcss',
+		[
+			'@nuxtjs/google-fonts',
+			{
+				families: {
+					Nunito: true,
+					download: true,
+					inject: true,
+				},
+			},
+		],
+	],
 	plugins: ['@/plugins/antd'],
-	modules: ['@nuxtjs/tailwindcss'],
 });
