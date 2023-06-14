@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+    newsgator:
+        build: ./
+        container_name: newsgator
+        restart: always
+        ports:
+            - '3000:3000'
+        command: 'npm run dev'
+        networks:
+            - nuxt-network
+networks:
+    nuxt-network:
+        driver: bridge
