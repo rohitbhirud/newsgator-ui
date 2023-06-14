@@ -20,3 +20,23 @@ export interface Source {
 	id: null | string;
 	name: string;
 }
+
+export interface UserInterface {
+	email: string;
+	name: string;
+}
+
+export interface SourceInterface {
+	category: string;
+	country: string;
+	description: string;
+	id: string;
+	language: string;
+	name: string;
+	url: string;
+}
+
+export interface UserPrefsInterface {
+	categories: string;
+	sources: string;
+}

@@ -1,7 +1,7 @@
 <template>
     <div>
         <NuxtLink :to="article.url">
-            <a-card :bordered="false">
+            <a-card :bordered="false" class="hover:underline">
                 <div class="mb-2">
                     {{ article.source.name }}
                 </div>

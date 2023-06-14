@@ -1,7 +1,7 @@
 <template>
     <div>
         <NuxtLink :to="article.url">
-            <a-card :bordered="false">
+            <a-card :bordered="false" class="hover:underline">
                 <template #cover>
                     <img :alt="article.title" :src="article.urlToImage" />
                 </template>

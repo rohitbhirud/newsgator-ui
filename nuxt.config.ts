@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	devtools: { enabled: true },
-	components: [{ path: '~/components/home', prefix: 'Home' }, '~/components'],
+	components: [{ path: '~/components/home', prefix: 'Home' }, { path: '~/components/auth', prefix: 'Auth' }, '~/components'],
 	vite: {
 		css: {
 			preprocessorOptions: {
@@ -15,6 +15,7 @@ export default defineNuxtConfig({
 	modules: [
 		'@nuxtjs/tailwindcss',
 		'@pinia/nuxt',
+		'@pinia-plugin-persistedstate/nuxt',
 		[
 			'@nuxtjs/google-fonts',
 			{

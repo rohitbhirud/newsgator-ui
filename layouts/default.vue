@@ -11,6 +11,15 @@
 </template>
 
 <script lang="ts">
+import { useNewsGatorStore } from '~/store/newsgator.js';
+
+export default defineComponent({
+    async setup() {
+        const { fetchUserPreferences } = useNewsGatorStore();
+
+        await fetchUserPreferences()
+    },
+});
 
 </script>
 

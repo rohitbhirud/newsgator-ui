@@ -20,9 +20,10 @@
 
 
 <script lang="ts">
+import { storeToRefs } from 'pinia';
 import { defineComponent } from 'vue';
 import { ArticleInterface } from '~/interfaces/response';
-import { useArticlesStore } from '~/store/articles';
+import { useNewsGatorStore } from '~/store/newsgator.js';
 
 export default defineComponent({
     props: {
@@ -30,23 +31,27 @@ export default defineComponent({
     },
 
     async setup() {
-        const { fetchArticles, articles } = useArticlesStore();
+        const ngStore = useNewsGatorStore();
 
-        await fetchArticles()
+        const { articles } = storeToRefs(ngStore)
+
+        await ngStore.fetchArticles()
 
         let articlesWithImage: ArticleInterface[] = [];
         let articlesWithoutImage: ArticleInterface[] = [];
 
-        articles?.forEach((article, index) => {
-            if (index === 0 || index === 3) {
-                articlesWithImage.push(article)
-            } else {
-                articlesWithoutImage.push(article)
-            }
-        })
+        if (articles.value && Array.isArray(articles.value)) {
+            articles.value.forEach((article, index) => {
+                if (index === 0 || index === 3) {
+                    articlesWithImage.push(article)
+                } else {
+                    articlesWithoutImage.push(article)
+                }
+            })
+        }
+
 
         return {
-            articles,
             articlesWithImage,
             articlesWithoutImage
         };

@@ -4,11 +4,13 @@
             <div v-for="(article, index) in articles" :key="index" class="mb-4">
                 <a-row :gutter="[16, 20]">
                     <a-col :span="18">
-                        <div class="pr-8">
-                            <span>{{ article.source.name }}</span>
-                            <div class="mt-1 mb-2">{{ article.title }}</div>
-                            <span>{{ getTimeSince(article.publishedAt) }}</span>
-                        </div>
+                        <NuxtLink :to="article.url">
+                            <div class="pr-8 text-black hover:underline">
+                                <span>{{ article.source.name }}</span>
+                                <div class="mt-1 mb-2">{{ article.title }}</div>
+                                <span>{{ getTimeSince(article.publishedAt) }}</span>
+                            </div>
+                        </NuxtLink>
                     </a-col>
                     <a-col :span="6">
                         <img :src="article.urlToImage" class="rounded" />
@@ -21,8 +23,9 @@
 
 
 <script lang="ts">
+import { storeToRefs } from 'pinia';
 import { defineComponent } from 'vue';
-import { useArticlesStore } from '~/store/articles';
+import { useNewsGatorStore } from '~/store/newsgator.js';
 
 export default defineComponent({
     props: {
@@ -30,9 +33,11 @@ export default defineComponent({
     },
 
     async setup() {
-        const { fetchArticles, articles } = useArticlesStore();
+        const ngStore = useNewsGatorStore();
 
-        await fetchArticles()
+        const { articles } = storeToRefs(ngStore)
+
+        await ngStore.fetchArticles()
 
         return {
             articles
