@@ -7,14 +7,16 @@ services:
       dockerfile: Dockerfile
     container_name: newsgator
     restart: always
+    ports:
+      - 3000:3000
     expose:
-      - 3005
+      - 3000
     environment:
       - NUXT_HOST=0.0.0.0
-      - NUXT_PORT=3005
+      - NUXT_PORT=3000
 
   nginx:
-    image: nginx:1.21
+    image: nginx:1.24
     container_name: nginx
     restart: always
     volumes:

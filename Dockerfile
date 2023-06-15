@@ -5,16 +5,17 @@ WORKDIR /var/www/dockerize-nuxt/newsgator
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm ci && npm cache clean --force
 
 COPY . .
 
-RUN npm ci && npm cache clean --force
 RUN npm run build
 
-EXPOSE 3005
+RUN node ./node_modules/esbuild/install.js
+
+EXPOSE 3000
 
 ENV NITRO_HOST=0.0.0.0
-ENV NITRO_PORT=3005
+ENV NITRO_PORT=3000
 
 CMD [ "node", ".output/server/index.mjs" ]
