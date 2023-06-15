@@ -9,6 +9,7 @@ RUN npm install
 
 COPY . .
 
+RUN npm ci && npm cache clean --force
 RUN npm run build
 
 EXPOSE 3005
