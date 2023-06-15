@@ -29,7 +29,7 @@ export const useNewsGatorStore = defineStore({
 				query += `sources=${this.preferences?.sources}`;
 			}
 
-			const { data, refresh }: any = await useFetch(`http://newsgator.rohitb.me/api/articles?country=in&page_size=8&${query}`, {
+			const { data, refresh }: any = await useFetch(`http://newsgator.rohitb.me:3123/api/articles?country=in&page_size=8&${query}`, {
 				cache: 'no-cache',
 			});
 
@@ -44,7 +44,7 @@ export const useNewsGatorStore = defineStore({
 			}
 		},
 		async fetchFilteredArticles(query: string) {
-			const { data }: any = await useFetch(`http://newsgator.rohitb.me/api/articles?country=in&page_size=8&${query}`, {
+			const { data }: any = await useFetch(`http://newsgator.rohitb.me:3123/api/articles?country=in&page_size=8&${query}`, {
 				cache: 'no-cache',
 			});
 
@@ -53,7 +53,7 @@ export const useNewsGatorStore = defineStore({
 			}
 		},
 		async fetchCategories() {
-			const { data }: any = await useFetch('http://newsgator.rohitb.me/api/articles/categories', {
+			const { data }: any = await useFetch('http://newsgator.rohitb.me:3123/api/articles/categories', {
 				cache: 'no-cache',
 			});
 			if (data?.value?.data) {
@@ -61,7 +61,7 @@ export const useNewsGatorStore = defineStore({
 			}
 		},
 		async fetchSources() {
-			const { data }: any = await useFetch('http://newsgator.rohitb.me/api/articles/sources', {
+			const { data }: any = await useFetch('http://newsgator.rohitb.me:3123/api/articles/sources', {
 				cache: 'no-cache',
 			});
 			if (data.value) {
@@ -69,7 +69,7 @@ export const useNewsGatorStore = defineStore({
 			}
 		},
 		async fetchCountries() {
-			const { data }: any = await useFetch('http://newsgator.rohitb.me/api/articles/countries', {
+			const { data }: any = await useFetch('http://newsgator.rohitb.me:3123/api/articles/countries', {
 				cache: 'no-cache',
 			});
 			if (data.value) {
@@ -77,7 +77,7 @@ export const useNewsGatorStore = defineStore({
 			}
 		},
 		async fetchUserPreferences() {
-			const { data }: any = await useFetch('http://newsgator.rohitb.me/api/user/preferences', {
+			const { data }: any = await useFetch('http://newsgator.rohitb.me:3123/api/user/preferences', {
 				cache: 'no-cache',
 				headers: {
 					Authorization: 'Bearer ' + this.token,
@@ -93,7 +93,7 @@ export const useNewsGatorStore = defineStore({
 			body.append('email', payload.email);
 			body.append('password', payload.password);
 
-			const { data }: any = await useFetch('http://newsgator.rohitb.me/api/auth/login', {
+			const { data }: any = await useFetch('http://newsgator.rohitb.me:3123/api/auth/login', {
 				cache: 'no-cache',
 				method: 'POST',
 				body: body,
@@ -125,7 +125,7 @@ export const useNewsGatorStore = defineStore({
 			body.append('categories', payload.categories);
 			body.append('sources', payload.sources);
 
-			const { data }: any = await useFetch('http://newsgator.rohitb.me/api/user/preferences', {
+			const { data }: any = await useFetch('http://newsgator.rohitb.me:3123/api/user/preferences', {
 				cache: 'no-cache',
 				method: 'POST',
 				body: body,
@@ -147,7 +147,7 @@ export const useNewsGatorStore = defineStore({
 			body.append('email', payload.email);
 			body.append('password', payload.password);
 
-			const { data, error }: any = await useFetch('http://newsgator.rohitb.me/api/auth/register', {
+			const { data, error }: any = await useFetch('http://newsgator.rohitb.me:3123/api/auth/register', {
 				cache: 'no-cache',
 				method: 'POST',
 				body: body,
