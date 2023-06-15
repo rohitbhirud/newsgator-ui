@@ -147,7 +147,7 @@ export const useNewsGatorStore = defineStore({
 			body.append('email', payload.email);
 			body.append('password', payload.password);
 
-			const { data, error }: any = await useFetch('http://newsgator.rohitb.me:3123/api/auth/register', {
+			const { data }: any = await useFetch('http://newsgator.rohitb.me:3123/api/auth/register', {
 				cache: 'no-cache',
 				method: 'POST',
 				body: body,
@@ -155,7 +155,9 @@ export const useNewsGatorStore = defineStore({
 					'Content-Type': 'application/x-www-form-urlencoded',
 				},
 			});
-			if (data?.value?.data?.errors) {
+			console.log('🚀 ~ register ~ data:', data?.value?.message);
+
+			if (data?.value?.errors) {
 				return false;
 			} else {
 				return true;
