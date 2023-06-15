@@ -1,15 +1,25 @@
-version: '3.7'
+version: '3.8'
 
 services:
-    newsgator:
-        build: ./
-        container_name: newsgator
-        restart: always
-        ports:
-            - '3000:3000'
-        command: 'npm run dev'
-        networks:
-            - nuxt-network
-networks:
-    nuxt-network:
-        driver: bridge
+  newsgator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: newsgator
+    restart: always
+    expose:
+      - 3005
+    environment:
+      - NUXT_HOST=0.0.0.0
+      - NUXT_PORT=3005
+
+  nginx:
+    image: nginx:1.21
+    container_name: nginx
+    restart: always
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - 80:80
+    depends_on:
+      - newsgator

@@ -1,4 +1,4 @@
-FROM node:16.20-alpine3.17
+FROM node:16.11.0-alpine
 
 RUN mkdir -p /var/www/dockerize-nuxt/newsgator
 WORKDIR /var/www/dockerize-nuxt/newsgator
@@ -11,10 +11,9 @@ COPY . .
 
 RUN npm run build
 
-EXPOSE 3000
+EXPOSE 3005
 
-ENV NUXT_HOST=0.0.0.0
+ENV NITRO_HOST=0.0.0.0
+ENV NITRO_PORT=3005
 
-ENV NUXT_PORT=3000
-
-CMD [ "npm", "dev" ]
+CMD [ "node", ".output/server/index.mjs" ]
