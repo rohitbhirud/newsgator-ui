@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	devtools: { enabled: true },
-	components: [{ path: '~/components/Home', prefix: 'Home' }, { path: '~/components/auth', prefix: 'Auth' }, '~/components'],
+	components: [{ path: '~/components/Home', prefix: 'Home' }, '~/components'],
 	vite: {
 		css: {
 			preprocessorOptions: {

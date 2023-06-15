@@ -155,14 +155,11 @@ export const useNewsGatorStore = defineStore({
 					'Content-Type': 'application/x-www-form-urlencoded',
 				},
 			});
-
-			if (error) {
+			if (data?.value?.data?.errors) {
 				return false;
 			} else {
 				return true;
 			}
-
-			return data;
 		},
 	},
 });

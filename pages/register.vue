@@ -35,8 +35,6 @@ export default defineComponent({
     async setup() {
         const ngStore = useNewsGatorStore();
 
-        const { token } = storeToRefs(ngStore)
-
         const message = useRegisterMessage()
 
         const layout = {
@@ -64,20 +62,17 @@ export default defineComponent({
             console.log('Success:', values);
 
             const res = await ngStore.register(values.user)
+            console.log("🚀 ~ onFinish ~ res:", res);
 
             if (res) {
-                message.value = 'Register Successful!'
+                message.value = 'Register Successful! Please login.'
+                setTimeout(async () => {
+                    await navigateTo('/login')
+                }, 2000);
             } else {
                 message.value = 'Please enter valid info.'
             }
 
-            if (token.value) {
-                await navigateTo('/login')
-            }
-
-            return {
-                token
-            };
         };
 
         return {
