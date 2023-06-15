@@ -39,10 +39,6 @@ export default defineComponent({
 
         const message = useRegisterMessage()
 
-        if (token) {
-            await navigateTo('/')
-        }
-
         const layout = {
             labelCol: { span: 4 },
             wrapperCol: { span: 16 },
