@@ -13,7 +13,7 @@ services:
       - NUXT_HOST=0.0.0.0
       - NUXT_PORT=3005
 
-  ngnginx:
+  nginx:
     image: nginx:1.21
     container_name: nginx
     restart: always
